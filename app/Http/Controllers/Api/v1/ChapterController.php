@@ -21,7 +21,7 @@ class ChapterController extends Controller
 
         return response()->json([
           'success' => true,
-          'courses' => $chapters
+          'chapters' => $chapters
         ], 200);
       } catch (\Exception $e) {
         return response()->json([
@@ -82,11 +82,11 @@ class ChapterController extends Controller
     public function show($id)
     {
       try {
-        $chapter = Chapter::find($id);
+        $chapter = Chapter::with('course')->where('id', $id)->first();;
 
         return response()->json([
           'success' => true,
-          'course' => $chapter
+          'chapter' => $chapter
         ], 200);
       } catch (\Exception $e) {
         return response()->json([

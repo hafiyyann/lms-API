@@ -83,7 +83,7 @@ class CourseController extends Controller
     public function show($id)
     {
       try {
-        $course = Course::find($id);
+        $course = Course::with('chapters')->where('id', $id)->first();
 
         return response()->json([
           'success' => true,
