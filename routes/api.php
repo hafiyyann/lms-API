@@ -4,6 +4,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\v1\CourseController;
 use App\Http\Controllers\Api\v1\ChapterController;
+use App\Http\Controllers\Api\v1\RoleController;
+use App\Http\Controllers\Api\v1\PermissionController;
 use App\Http\Controllers\Api\AuthController;
 
 /*
@@ -24,12 +26,11 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 Route::group(['prefix' => 'v1', 'middleware' => 'auth:api'], function(){
   Route::apiResource('course', CourseController::class);
   Route::apiResource('chapter', ChapterController::class);
+  Route::apiResource('role', RoleController::class);
+  Route::apiResource('permission', PermissionController::class);
 });
 
-Route::group([
-  'middleware' => 'api',
-  'prefix' => 'auth'
-], function ($router) {
+Route::group(['prefix' => 'auth', 'middleware' => 'api'], function () {
   Route::post('/login', [AuthController::class, 'login']);
   Route::post('/register', [AuthController::class, 'register']);
   Route::post('/logout', [AuthController::class, 'logout']);
