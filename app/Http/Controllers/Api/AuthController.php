@@ -79,7 +79,7 @@ class AuthController extends Controller
   *
   * @return \Illuminate\Http\JsonResponse
   */
-  public function refresh() {
+  public function refresh_token() {
     return $this->createNewToken(auth()->refresh());
   }
   /**
@@ -87,8 +87,26 @@ class AuthController extends Controller
   *
   * @return \Illuminate\Http\JsonResponse
   */
-  public function userProfile() {
-    return response()->json(auth()->user());
+  public function show_logged_user_data() {
+    try {
+      $user = auth()->user();
+
+      $logged_user_data = [
+        'id'            => $user->id,
+        'name'          => $user->name,
+        'email'         => $user->email,
+        'registered_at' => $user->created_at,
+        'role'          => $user->getRoleNames()
+      ];
+
+      return response()->json($logged_user_data, 200);
+    } catch (\Exception $e) {
+      return response()->json([
+        'success' => false,
+        'message' => $e->getMessage()
+      ], 500);
+    }
+    return response()->json($logged_user_data);
   }
   /**
   * Get the token array structure.
@@ -98,11 +116,24 @@ class AuthController extends Controller
   * @return \Illuminate\Http\JsonResponse
   */
   protected function createNewToken($token){
-    return response()->json([
-      'access_token' => $token,
-      'token_type' => 'bearer',
-      'expires_in' => auth()->factory()->getTTL() * 60,
-      'user' => auth()->user()
-    ]);
+    try {
+      $user = auth()->user();
+
+      $logged_user_data = [
+        'access_token'  => $token,
+        'id'            => $user->id,
+        'name'          => $user->name,
+        'email'         => $user->email,
+        'registered_at' => $user->created_at,
+        'role'          => $user->getRoleNames()
+      ];
+
+      return response()->json($logged_user_data, 200);
+    } catch (\Exception $e) {
+      return response()->json([
+        'success' => false,
+        'message' => $e->getMessage()
+      ], 500);
+    }
   }
 }

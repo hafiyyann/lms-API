@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api\v1;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Spatie\Permission\Models\Role;
+use App\Models\User;
 
 class RoleController extends Controller
 {
@@ -92,5 +93,23 @@ class RoleController extends Controller
         'success' => true,
         'message' => 'Role removed!'
       ]);
+    }
+
+    public function assign_role_to_user(Request $request){
+      try {
+        $user = User::find($request->id);
+        $user->assignRole($request->roles);
+
+        return response([
+          'id'    => $user->id,
+          'name'  => $user->name,
+          'role'  => $user->getRoleNames()
+        ], 200);
+      } catch (\Exception $e) {
+        return response()->json([
+          'success' => false,
+          'message' => $e->getMessage()
+        ], 500);
+      }
     }
 }
