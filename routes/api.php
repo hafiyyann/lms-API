@@ -20,7 +20,7 @@ use App\Http\Controllers\Api\AuthController;
 */
 
 // auth
-Route::group(['prefix' => 'auth', 'middleware' => 'api'], function () {
+Route::group(['prefix' => 'auth'], function () {
   Route::post('/login', [AuthController::class, 'login']);
   Route::post('/register', [AuthController::class, 'register']);
   Route::post('/logout', [AuthController::class, 'logout']);
@@ -28,7 +28,7 @@ Route::group(['prefix' => 'auth', 'middleware' => 'api'], function () {
   Route::get('/show-logged-user-data', [AuthController::class, 'show_logged_user_data']);
 });
 
-Route::group(['prefix' => 'v1', 'middleware' => 'auth:api'], function(){
+Route::group(['prefix' => 'v1', 'middleware' => 'CheckToken'], function(){
   // custome api url
   Route::post('/role/assign-role-to-user', [RoleController::class, 'assign_role_to_user'])->name('role.assign_role_to_user');
 
