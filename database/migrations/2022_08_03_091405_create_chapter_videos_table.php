@@ -15,9 +15,8 @@ class CreateChapterVideosTable extends Migration
     {
         Schema::create('chapter_videos', function (Blueprint $table) {
             $table->id();
-            $table->string('title');
-            $table->text('description')->nullable();
             $table->string('filename');
+            $table->unsignedBigInteger('component_id');
             $table->timestamps();
         });
     }

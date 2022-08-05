@@ -15,8 +15,13 @@ class CreateChapterComponentsTable extends Migration
     {
         Schema::create('chapter_components', function (Blueprint $table) {
             $table->id();
+            $table->string('title');
+            $table->text('description')->nullable();
             $table->string('type');
-            $table->unsignedBigInteger('source_id');
+            $table->unsignedBigInteger('created_by');
+            $table->boolean('visibility')->default(1)->nullable();
+            $table->integer('order')->nullable();
+            $table->unsignedBigInteger('chapter_id');
             $table->timestamps();
         });
     }

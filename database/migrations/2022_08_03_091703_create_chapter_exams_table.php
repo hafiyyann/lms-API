@@ -15,8 +15,9 @@ class CreateChapterExamsTable extends Migration
     {
         Schema::create('chapter_exams', function (Blueprint $table) {
             $table->id();
-            $table->string('title');
+            $table->integer('max_attept');
             $table->integer('duration');
+            $table->unsignedBigInteger('component_id');
             $table->timestamps();
         });
     }

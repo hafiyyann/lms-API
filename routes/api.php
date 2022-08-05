@@ -6,6 +6,7 @@ use App\Http\Controllers\Api\v1\CourseController;
 use App\Http\Controllers\Api\v1\ChapterController;
 use App\Http\Controllers\Api\v1\RoleController;
 use App\Http\Controllers\Api\v1\PermissionController;
+use App\Http\Controllers\Api\v1\ChapterComponentController;
 use App\Http\Controllers\Api\AuthController;
 
 /*
@@ -37,4 +38,5 @@ Route::group(['prefix' => 'v1', 'middleware' => 'CheckToken'], function(){
   Route::apiResource('chapter', ChapterController::class);
   Route::apiResource('role', RoleController::class);
   Route::apiResource('permission', PermissionController::class);
+  Route::apiResource('chapter/component', ChapterComponentController::class);
 });

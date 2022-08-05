@@ -17,6 +17,7 @@ class CreateChapterArticlesTable extends Migration
             $table->id();
             $table->string('title');
             $table->longText('content');
+            $table->unsignedBigInteger('component_id');
             $table->timestamps();
         });
     }
