@@ -154,7 +154,6 @@ class ChapterComponentController extends Controller
 
           if ($type == 'meeting') {
             $validator = Validator::make($request->all(), [
-              'topic'       => 'required',
               'url'         => 'required'
             ]);
 
@@ -173,7 +172,7 @@ class ChapterComponentController extends Controller
             ]);
 
             $component_source = ChapterMeeting::create([
-              'topic' => $request->topic,
+              'topic' => $request->topic ? $request->topic : $component->title,
               'url' => $request->url,
               'component_id' => $component->id
             ]);
@@ -216,7 +215,59 @@ class ChapterComponentController extends Controller
      */
     public function show($id)
     {
-        //
+      try {
+        $component = ChapterComponent::find($id);
+
+        if ($component->type == 'meeting') {
+          $component_source = $component->meeting;
+          $source = [
+            'topic' => $component_source->topic,
+            'url'   => $component_source->url
+          ];
+        } elseif ($component->type == 'video') {
+          $component_source = $component->video;
+          $source = [
+            'url' => 'Video url should be here'
+          ];
+        } elseif ($component->type == 'article') {
+          $component_source = $component->article;
+          $source = [
+            'title' => $component_source->title,
+            'content' => $component_source->content
+          ];
+        } elseif ($component->type == 'exam') {
+          $component_source = $component->exam;
+          $source = [
+            'max_attempt' => $component_source->max_attempt,
+            'duration' => $component_source->duration,
+            'question' => 'Array of question should be here'
+          ];
+        } else {
+          $source = [];
+        }
+
+        $component_response = [
+          'title'       => $component->title,
+          'visibility'  => $component->visibility,
+          'created_by'  => $component->author->name,
+          'chapter'     => $component->chapter->title,
+          'type'        => $component->type,
+          'order'       => $component->order,
+          'description' => $component->description,
+          'source'      => $source
+        ];
+
+        return response()->json([
+          'success' => true,
+          'component' => $component_response
+        ], 200);
+      } catch (\Exception $e) {
+        return response()->json([
+          'success' => false,
+          'message' => $e->getMessage()
+        ], 500);
+      }
+
     }
 
     /**

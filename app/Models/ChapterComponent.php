@@ -13,22 +13,22 @@ class ChapterComponent extends Model
 
     public function video()
     {
-      return $this->hasMany(ChapterVideo::class);
+      return $this->hasOne(ChapterVideo::class, 'component_id');
     }
 
     public function exam()
     {
-      return $this->hasMany(ChapterExam::class);
+      return $this->hasOne(ChapterExam::class, 'component_id');
     }
 
     public function meeting()
     {
-      return $this->hasMany(ChapterMeeting::class);
+      return $this->hasOne(ChapterMeeting::class, 'component_id');
     }
 
     public function article()
     {
-      return $this->hasMany(ChapterArticle::class);
+      return $this->hasOne(ChapterArticle::class, 'component_id');
     }
 
     public function chapter()
