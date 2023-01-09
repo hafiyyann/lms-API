@@ -17,7 +17,7 @@ class CourseController extends Controller
     public function index()
     {
       try {
-        $courses = Course::all();
+        $courses = Course::with('chapters')->get();
 
         return response()->json([
           'success' => true,
